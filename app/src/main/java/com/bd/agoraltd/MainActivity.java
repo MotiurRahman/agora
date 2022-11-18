@@ -18,79 +18,44 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+
 
 import com.bd.agoraltd.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static String FACEBOOK_URL = "https://www.facebook.com/bdcareerorg";
-    public static String FACEBOOK_PAGE_ID = "120025415339734";
+    public static String FACEBOOK_PAGE_ID = "515810368610549";
 
     private ProgressBar proBar;
-    private WebView bdJobsCareers;
+    private WebView agoraLtd;
     private static String URL = "https://agorasuperstores.com";
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener
+            = new NavigationBarView.OnItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if (isNetworkConnected()) {
-                        bdJobsCareers.loadUrl(URL);
+                        agoraLtd.loadUrl(URL);
 
                     } else {
                         Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
                     }
 
                     return true;
-//                case R.id.govtJob:
-//                    if (isNetworkConnected()) {
-//                        bdJobsCareers.loadUrl("https://bd-career.org/category/government-jobs-circular");
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
-//                    }
-//
-//
-//                    return true;
-//                case R.id.ngoJob:
-//                    if (isNetworkConnected()) {
-//
-//                        bdJobsCareers.loadUrl("https://bd-career.org/category/ngodevelopment");
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
-//                    }
-//
-//
-//                    return true;
-//                case R.id.bankJob:
-//                    if (isNetworkConnected()) {
-//                        bdJobsCareers.loadUrl("https://bd-career.org/category/bank-jobs");
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
-//                    }
-//
-//
-//                    return true;
-//                case R.id.teletalk:
-//                    if (isNetworkConnected()) {
-//                        bdJobsCareers.loadUrl("https://bd-career.org/category/teletalk-application");
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
-//                    }
-//
-//
-//                    return true;
+                case R.id.navigation_feedback:
+                    if (isNetworkConnected()) {
+                        agoraLtd.loadUrl("https://agorasuperstores.com/customerFeedback");
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
+                    }
+                    return true;
 
             }
             return false;
@@ -102,32 +67,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Webview
-        bdJobsCareers = (WebView) findViewById(R.id.web1);
-        WebSettings webSettings = bdJobsCareers.getSettings();
+        agoraLtd = (WebView) findViewById(R.id.web1);
+        WebSettings webSettings = agoraLtd.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
         //Improve wevView performance
 
-        bdJobsCareers.clearCache(true);
-        bdJobsCareers.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        bdJobsCareers.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        bdJobsCareers.getSettings().setAppCacheEnabled(false);
-        bdJobsCareers.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        bdJobsCareers.setInitialScale(1);
-        // Configure related browser settings
-        // bdJobsCareers.getSettings().setLoadsImagesAutomatically(true);
-        // Enable responsive layout
-        //bdJobsCareers.getSettings().setUseWideViewPort(true);
-// Zoom out if the content width is greater than the width of the viewport
-        //  bdJobsCareers.getSettings().setLoadWithOverviewMode(true);
-        //bdJobsCareers.getSettings().setSupportZoom(true);
-        bdJobsCareers.getSettings().setDisplayZoomControls(false);
-        bdJobsCareers.getSettings().setBuiltInZoomControls(true);
-        // chakrirkhobor.setVerticalScrollBarEnabled(false);
-        bdJobsCareers.setHorizontalScrollBarEnabled(false);
+        agoraLtd.clearCache(true);
+        agoraLtd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        agoraLtd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        agoraLtd.getSettings().setAppCacheEnabled(false);
+        agoraLtd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        agoraLtd.setInitialScale(1);
+        agoraLtd.getSettings().setDisplayZoomControls(false);
+        agoraLtd.getSettings().setBuiltInZoomControls(true);
+        agoraLtd.setHorizontalScrollBarEnabled(false);
         webSettings.setDomStorageEnabled(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setUseWideViewPort(true);
@@ -139,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkConnected()) {
 //            Bundle bundle = getIntent().getExtras();
 //            String url = bundle.getString("URL");
-            bdJobsCareers.loadUrl(URL);
+            agoraLtd.loadUrl(URL);
         } else {
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
         }
 
 
         //bdJobsCareers.loadUrl("https://scheduler-hcir-int-us1.sec3ure.com/Scheduler?HCIRID=977272&SSOID=977272&token=87ae4b83a2e47c31d480c5749253653a");
-        bdJobsCareers.setWebViewClient(new mywebClient());
+        agoraLtd.setWebViewClient(new mywebClient());
 
         proBar = (ProgressBar) findViewById(R.id.progressBar1);
 
@@ -201,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (bdJobsCareers.canGoBack()) {
-            bdJobsCareers.goBack();
+        if (agoraLtd.canGoBack()) {
+            agoraLtd.goBack();
         } else {
             super.onBackPressed();
         }
@@ -213,15 +170,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-      //  overridePendingTransitionExit();
+        //  overridePendingTransitionExit();
     }
 
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-       // overridePendingTransitionEnter();
+        // overridePendingTransitionEnter();
     }
-
 
 
     @Override
@@ -231,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
 
 
     @Override
