@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bd.agoraltd.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         //Improve wevView performance
 
         agoraLtd.clearCache(true);
-        agoraLtd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //agoraLtd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         agoraLtd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         agoraLtd.getSettings().setAppCacheEnabled(false);
         agoraLtd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -86,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
         agoraLtd.getSettings().setBuiltInZoomControls(true);
         agoraLtd.setHorizontalScrollBarEnabled(false);
         webSettings.setDomStorageEnabled(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         webSettings.setUseWideViewPort(true);
 
-        webSettings.setSavePassword(true);
+      // webSettings.setSavePassword(true);
         webSettings.setSaveFormData(true);
-        webSettings.setEnableSmoothTransition(true);
+       // webSettings.setEnableSmoothTransition(true);
 
         if (isNetworkConnected()) {
 //            Bundle bundle = getIntent().getExtras();
@@ -100,6 +104,24 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
         }
+
+        // Get Device token
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            System.out.println("Fetching FCM registration token failed");
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        System.out.println("Token:"+token);
+                       // Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
         //bdJobsCareers.loadUrl("https://scheduler-hcir-int-us1.sec3ure.com/Scheduler?HCIRID=977272&SSOID=977272&token=87ae4b83a2e47c31d480c5749253653a");
