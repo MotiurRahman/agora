@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static String FACEBOOK_URL = "https://www.facebook.com/bdcareerorg";
-    public static String FACEBOOK_PAGE_ID = "515810368610549";
+    public static String FACEBOOK_PAGE_ID = "10804098278";
 
     private ProgressBar proBar;
     private WebView agoraLtd;
@@ -52,9 +52,21 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     return true;
-                case R.id.navigation_feedback:
+                case R.id.navigation_notifications:
                     if (isNetworkConnected()) {
-                        agoraLtd.loadUrl("https://agorasuperstores.com/customerFeedback");
+                      //  agoraLtd.loadUrl("https://agorasuperstores.com/customerFeedback");
+
+                        Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
+                    }
+                    return true;
+
+                case R.id.navigation_orders:
+                    if (isNetworkConnected()) {
+                     agoraLtd.loadUrl("https://agorasuperstores.com/order/customerOrders");
 
                     } else {
                         Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
@@ -123,6 +135,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+
+        FirebaseMessaging.getInstance().subscribeToTopic("agora_ltd")
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+
+                        System.out.println("Subscribed to topic successfully");
+                    } else {
+                        System.out.println("ttopic"+task.getException());
+                    }
+                }
+            });
 
         //bdJobsCareers.loadUrl("https://scheduler-hcir-int-us1.sec3ure.com/Scheduler?HCIRID=977272&SSOID=977272&token=87ae4b83a2e47c31d480c5749253653a");
         agoraLtd.setWebViewClient(new mywebClient());
